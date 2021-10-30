@@ -3,23 +3,17 @@ package com.skilldistillery.blackjack.game;
 import com.skilldistillery.hand.BlackJackHand;
 import com.skilldistillery.hand.Hand;
 
-public class Player extends BlackJackHand implements HitOrStand {
+public class Player extends BlackJackHand {
 
 	Hand playerHand = new BlackJackHand();
-	Dealer dealer = new Dealer();
+	
+	public Player() {}
 
 	public void displayHand() {
-		System.out.println(this.playerHand.getCardsInHand());
-		System.out.println("A value of " + this.playerHand.getHandValue());
+		System.out.println(this.getCardsInHand());
+		System.out.println("A value of " + this.getHandValue());
 	}
 
-	@Override
-	public void stand() {}
-
-	@Override
-	public void hit() {
-		this.playerHand.addCard(dealer.dealCard(this.playerHand));
-
-	}
+	
 
 }

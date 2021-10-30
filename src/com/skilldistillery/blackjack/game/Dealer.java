@@ -2,19 +2,15 @@ package com.skilldistillery.blackjack.game;
 
 import java.util.Collections;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import com.skilldistillery.cards.Card;
 import com.skilldistillery.cards.Deck;
-import com.skilldistillery.hand.BlackJackHand;
-import com.skilldistillery.hand.Hand;
 
-public class Dealer extends BlackJackHand implements HitOrStand{
+public class Dealer extends Player implements HitOrStand{
 
 	Deck deck = new Deck();
-	Dealer dealer = new Dealer();
-	Hand dealerHand = new BlackJackHand();
-	
 	
 	public Dealer(Deck deck) {
 		this.deck = deck;
@@ -23,14 +19,16 @@ public class Dealer extends BlackJackHand implements HitOrStand{
 	public Dealer() {}
 	
 	
-	public Card dealCard(Hand hand) {
+	public Card dealCard() {
 		Card dealtCard = deck.getDeck().remove(0);
 		return dealtCard;
 	}
 	
-	public void dealHand(Hand hand) {
-		hand.addCard(dealCard(hand));
-		hand.addCard(dealCard(hand));
+	public void dealHand(Player player, Player dealer) {
+		player.addCard(deck.getDeck().remove(0));
+		dealer.addCard(deck.getDeck().remove(0));
+		player.addCard(deck.getDeck().remove(0));
+		dealer.addCard(deck.getDeck().remove(0));
 	}
 	
 	public Deck shuffle() {
@@ -38,15 +36,17 @@ public class Dealer extends BlackJackHand implements HitOrStand{
 		return this.deck;
 	}
 	
+	
+	@Override
 	public void displayHand() {
-		System.out.println(this.dealerHand.getCardsInHand());
-		System.out.println("A value of " + this.dealerHand.getHandValue());
+		Iterator <Card>  it = this.getCardsInHand().iterator();
+			System.out.println("The dealer's hand: " + it.next());
 	}
 	
 	
 	@Override
-	public void hit() {
-		this.dealerHand.addCard(dealer.dealCard(this.dealerHand));
+	public void hit(Player player) {
+		player.addCard(this.dealCard());
 		
 	}
 
@@ -59,7 +59,7 @@ public class Dealer extends BlackJackHand implements HitOrStand{
 	public void askToHitOrStand(Player player) {
 		Scanner sc = new Scanner(System.in);
 		int userInput = 0;
-		System.out.println("Would " + player + " like to hit or stand.");
+		System.out.println(player + "  would you like to hit or stand.");
 		try{
 			do {
 		
@@ -68,11 +68,20 @@ public class Dealer extends BlackJackHand implements HitOrStand{
 		userInput = sc.nextInt();
 		sc.nextLine();
 		switch(userInput) {
-		case 1: player.hit();
+		case 1: 
+			hit(player);
+		 	System.out.println(player.getCardsInHand());
+			if(player.getHandValue() > 21) {
+				System.out.println("BUST!");
+				userInput = 2;
+			}if(player.getHandValue() == 21) {
+				System.out.println("21!");
+				userInput = 2;
+			}
 			break;
 			
 		case 2:
-			player.stand();
+			this.stand();
 			break;
 			
 		default:
@@ -83,18 +92,25 @@ public class Dealer extends BlackJackHand implements HitOrStand{
 		}catch(InputMismatchException e){
 			
 			System.err.println("Wrong Input");
-			dealer.askToHitOrStand(player);
+			this.askToHitOrStand(player);
 		}
-		sc.close();
 		
 	}
 
-	public void playDealerHand() {
-		while(this.dealerHand.getHandValue() < 17) {
-			dealer.hit();
+	public void playDealerHand(Dealer dealer) {
+		System.out.println("The dealer has " + dealer.getCardsInHand());
+		while(this.getHandValue() < 17) {
+			hit(dealer);
+			System.out.println("Dealer hits.");
+			System.out.println(dealer.getCardsInHand());
+			if(this.getHandValue() > 21) {
+				System.out.println("Dealer busts.");
+			}
 		}
-		if(this.dealerHand.getHandValue() > 17) {
-			dealer.stand();
+		if(this.getHandValue() > 17) {
+			this.stand();
 		}
 	}
+
+	
 }

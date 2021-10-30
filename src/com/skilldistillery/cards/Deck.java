@@ -1,10 +1,8 @@
 package com.skilldistillery.cards;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import com.skilldistillery.hand.Hand;
 
 public class Deck {
 	
