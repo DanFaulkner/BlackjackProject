@@ -40,7 +40,7 @@ public class Dealer extends Player implements HitOrStand{
 	@Override
 	public void displayHand() {
 		Iterator <Card>  it = this.getCardsInHand().iterator();
-			System.out.println("The dealer's hand: " + it.next());
+			System.out.println("The dealer's hand: a card facedown and a " + it.next());
 	}
 	
 	

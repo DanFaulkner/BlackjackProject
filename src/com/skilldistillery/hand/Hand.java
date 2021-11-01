@@ -26,7 +26,7 @@ public abstract class Hand {
 
 	@Override
 	public String toString() {
-		return "Your cards are " + cardsInHand;
+		return "Your cards are " + cardsInHand.toString();
 	}
 	
 	
