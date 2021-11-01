@@ -1,6 +1,6 @@
 # BlackjackProject
 
-#Description
+# Description
 
 This is the fourth weekend project while attending Skill Distillery.
 The program has the user play a hand of blackjack. Starting the program you are automatically dealt a hand and follow the prompts to hit or stand.
